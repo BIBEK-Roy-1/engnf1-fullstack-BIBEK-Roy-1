@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export async function registerUser({name,email,password}){
-        // 1. Validate input types
+        // Validate input types
     if (
         typeof name !== "string" ||
         typeof email !== "string" ||
@@ -16,11 +16,11 @@ export async function registerUser({name,email,password}){
         throw error;
     }
 
-    // 2. Normalize input
+    //  Normalize input
     name = name.trim();
     email = email.trim().toLowerCase();
 
-    // 3. Validate name
+    //  Validate name
     if (name.length < 2 || name.length > 50) {
         const error = new Error("Name must be 2-50 characters");
         error.statusCode = 400;
@@ -36,7 +36,7 @@ export async function registerUser({name,email,password}){
         throw error;
     }
 
-      // 5. Validate password
+      // Validate password
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,64}$/;
 
         if (!passwordRegex.test(password)) {
@@ -48,7 +48,7 @@ export async function registerUser({name,email,password}){
         throw error;
     }
 
-    // 6. Check whether email already exists
+    // Check whether email already exists
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -58,7 +58,7 @@ export async function registerUser({name,email,password}){
         throw error;
     }
 
-    // 7. Hash password
+    // Hash password
     const passwordHash = await bcrypt.hash(password, 10);
     try {
         const user = await User.create({
@@ -129,6 +129,7 @@ export async function loginUser({email,password}){
     const token=jwt.sign(
         {userId: foundUser._id,
             email:foundUser.email,
+            role: foundUser.role
         },
         process.env.JWT_SECRET,
         {

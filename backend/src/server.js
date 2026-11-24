@@ -4,6 +4,7 @@ import { connectDB } from './config/db.js';
 import authRouter from './routes/auth.router.js';
 import { errorHandler } from './middleware/error.middleware.js';
 import ticketRouter from './routes/ticket.router.js';
+import bookingRoutes from "./routes/booking.routes.js";
 
 
 dotenv.config();
@@ -20,6 +21,7 @@ async function startServer() {
   // Routes
   app.use("/api/auth", authRouter);
   app.use("/api/tickets", ticketRouter);
+  app.use("/api/bookings", bookingRoutes);
 
 
 app.get('/api/health',(req,res)=>{
