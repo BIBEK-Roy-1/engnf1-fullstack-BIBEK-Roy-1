@@ -14,6 +14,7 @@ async function startServer() {
   const app=express();
   const port =process.env.PORT;
    // Middleware
+  app.set("query parser", "extended");
   app.use(express.json());
 
   // Routes

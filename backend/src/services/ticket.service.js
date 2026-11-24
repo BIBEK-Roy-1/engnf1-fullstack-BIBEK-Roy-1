@@ -1,7 +1,5 @@
 import Ticket from "../models/ticket.model.js";
 import TicketEvent from "../models/ticket-event.model.js";
-import mongoose from "mongoose";
-import User from "../models/user.model.js";
 
 const TICKET_CATAGORIS=[
     "BILLING",
