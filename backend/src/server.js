@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import authRouter from './routes/auth.router.js';
+import { errorHandler } from './middleware/error.middleware.js';
 
 
 dotenv.config();
@@ -25,6 +26,16 @@ app.get('/api/health',(req,res)=>{
     })
 })
 
+
+// 4. Handle unknown routes
+app.use((req, res, next) => {
+    const error = new Error(`Route not found: ${req.originalUrl}`);
+    error.statusCode = 404;
+    error.code = "ROUTE_NOT_FOUND";
+    next(error);
+});
+
+  app.use(errorHandler);
   app.listen(port,()=>{
     console.log("server is listning at "+port)
   })

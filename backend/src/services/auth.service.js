@@ -148,3 +148,21 @@ export async function loginUser({email,password}){
     }
 
 }
+
+export const getUserById=async(userId)=>{
+    const user=await User.findById(userId).select("-passwordHash");
+
+    if(!user){
+        const error=new Error("user not found");
+        error.status=404;
+        error.code="NOT_FOUND";
+        throw error;
+    }
+    return {
+        id:user._id,
+        name:user.name,
+        email:user.email,
+        role:user.role,
+        createdAt: user.createdAt
+    }
+};
