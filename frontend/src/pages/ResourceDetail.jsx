@@ -54,7 +54,22 @@ export default function ResourceDetail() {
   const availableStartTimes = timeSlots.filter((time) => {
     const slot = new Date(`${date}T${time}`);
 
-    return slot > new Date() && slot.getTime() <= Date.now() + 30 * 86400000;
+    return (
+      time !== "23:30" &&
+      slot > new Date() &&
+      slot.getTime() <= Date.now() + 30 * 86400000
+    );
+  });
+
+  const availableEndTimes = timeSlots.filter((time) => {
+    if (!form.startTime) return false;
+
+    const start = new Date(`${date}T${form.startTime}`);
+    const end = new Date(`${date}T${time}`);
+
+    const duration = (end - start) / 60000;
+
+    return duration >= 30 && duration <= 240;
   });
 
   useEffect(() => {
@@ -129,6 +144,7 @@ export default function ResourceDetail() {
     setForm((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "startTime" ? { endTime: "" } : {}),
     }));
   }
 
@@ -329,11 +345,12 @@ export default function ResourceDetail() {
                   name="endTime"
                   value={form.endTime}
                   onChange={handleChange}
+                  disabled={!form.startTime}
                   required
                 >
                   <option value="">Select end time</option>
 
-                  {timeSlots.map((time) => (
+                  {availableEndTimes.map((time) => (
                     <option key={time} value={time}>
                       {time}
                     </option>

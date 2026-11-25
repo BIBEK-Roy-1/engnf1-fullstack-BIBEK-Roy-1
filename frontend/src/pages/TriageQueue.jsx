@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getTickets, importTickets } from "../api/tickets.api";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { getStats } from "../api/stats.api";
 
 function TriageQueue() {
   const [tickets, setTickets] = useState([]);
@@ -19,8 +20,28 @@ function TriageQueue() {
   const [error, setError] = useState("");
   const [importing, setImporting] = useState(false);
   const [message, setMessage] = useState("");
+  const [stats, setStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState("");
 
   const navigate = useNavigate();
+  const fetchStats = async () => {
+    try {
+      setStatsLoading(true);
+      setStatsError("");
+
+      const data = await getStats();
+      setStats(data);
+    } catch (err) {
+      setStatsError(err.message);
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
 
   const fetchTickets = async () => {
     try {
@@ -80,8 +101,8 @@ function TriageQueue() {
       setMessage(
         `Total: ${result.total} | Imported: ${result.importedCount} | Updated: ${result.updatedCount} | Skipped: ${result.skippedOverrideCount}`,
       );
-      setSelectedFile(null);
       await fetchTickets();
+      await fetchStats();
     } catch (err) {
       setError(err.message || "Failed to import tickets.");
     } finally {
@@ -105,10 +126,44 @@ function TriageQueue() {
           />
 
           <button onClick={handleImport} disabled={importing || !selectedFile}>
-            {importing ? "Importing..." : "Upload Tickets"}
+            {importing ? "Importing..." : "Re-Import Feed"}
           </button>
         </div>
       </div>
+      {statsLoading ? (
+        <p>Loading statistics...</p>
+      ) : statsError ? (
+        <p className="error-message">{statsError}</p>
+      ) : (
+        stats && (
+          <div className="stats-grid">
+            <div className="stat-card">
+              <p className="stat-label">Total Tickets</p>
+              <h2 className="stat-value">
+                {Object.values(stats.byStatus).reduce(
+                  (total, count) => total + count,
+                  0,
+                )}
+              </h2>
+            </div>
+
+            <div className="stat-card">
+              <p className="stat-label">Reviewed Tickets</p>
+              <h2 className="stat-value">{stats.reviewedCount}</h2>
+            </div>
+
+            <div className="stat-card">
+              <p className="stat-label">Open Tickets</p>
+              <h2 className="stat-value">{stats.byStatus.OPEN}</h2>
+            </div>
+
+            <div className="stat-card">
+              <p className="stat-label">Model Agreement Rate</p>
+              <h2 className="stat-value">{stats.modelAgreementRate}%</h2>
+            </div>
+          </div>
+        )
+      )}
 
       <div className="triage-filters">
         <input

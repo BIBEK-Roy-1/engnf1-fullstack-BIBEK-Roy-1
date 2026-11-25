@@ -10,6 +10,8 @@ import Resources from "../pages/Resources";
 import ResourceDetail from "../pages/ResourceDetail";
 import MyBookings from "../pages/MyBookings";
 import ManageResources from "../pages/ManageResources";
+import ManageBookings from "../pages/ManageBookings";
+import AdminAnalytics from "../pages/AdminAnalytics";
 
 function AppRoutes() {
   return (
@@ -32,6 +34,8 @@ function AppRoutes() {
           {/* Admin-only routes */}
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin/resources" element={<ManageResources />} />
+            <Route path="/admin/bookings" element={<ManageBookings />} />
+            <Route path="/admin/analytics" element={<AdminAnalytics />} />
           </Route>
         </Route>
       </Route>

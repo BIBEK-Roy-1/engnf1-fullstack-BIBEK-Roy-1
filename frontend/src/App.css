@@ -374,7 +374,6 @@
   margin-top: 32px;
 }
 
-
 .stat-label {
   color: var(--text-secondary);
   font-size: 14px;
@@ -406,7 +405,6 @@
   white-space: normal;
   overflow-wrap: anywhere;
 }
-
 
 /* Responsive layout */
 @media (max-width: 1024px) {
@@ -669,7 +667,6 @@
 .ticket-row:hover {
   background: #f8f5ff;
 }
-
 
 /* Ticket Detail Page */
 
@@ -1211,5 +1208,259 @@
 @media (max-width: 480px) {
   .admin-resource-actions button {
     width: 100%;
+  }
+}
+
+/* Admin Manage Bookings */
+
+.manage-bookings-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.manage-bookings-page h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.manage-bookings-page > p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.admin-booking-filters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 16px;
+}
+
+.manage-bookings-page .booking-card {
+  overflow-wrap: anywhere;
+}
+
+.manage-bookings-page .booking-card form {
+  margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+  .admin-booking-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-booking-filters {
+    grid-template-columns: 1fr;
+  }
+}
+/* Admin Analytics */
+
+.admin-analytics-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-analytics-page h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.admin-analytics-page > p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.analytics-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.analytics-card p {
+  margin: 0 0 10px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.analytics-card h2 {
+  margin: 0;
+  font-size: 30px;
+  color: #111827;
+}
+
+@media (max-width: 768px) {
+  .analytics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Triage Queue */
+
+.triage-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  min-width: 0;
+}
+
+.triage-page .page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.triage-page .page-header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.triage-page .page-header p {
+  margin: 8px 0 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Compact Statistics Strip */
+
+.triage-page .stats-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.triage-page .stat-card {
+  padding: 16px;
+  background: var(--bg-surface);
+}
+
+.triage-page .stat-label {
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+
+.triage-page .stat-value {
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Ticket Upload */
+
+.ticket-upload {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ticket-upload input {
+  min-width: 0;
+  max-width: 100%;
+  font-size: 13px;
+}
+
+.ticket-upload input::file-selector-button {
+  padding: 10px 14px;
+  margin-right: 10px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ticket-upload button {
+  padding: 10px 16px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ticket-upload button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Ticket Filters */
+
+.triage-filters {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.triage-filters input,
+.triage-filters select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 13px;
+}
+
+.triage-filters input:focus,
+.triage-filters select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+/* Triage Responsive Layout */
+
+@media (max-width: 1024px) {
+  .triage-page .stats-grid,
+  .triage-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .triage-page .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .triage-page .stat-card {
+    padding: 12px;
+  }
+
+  .triage-page .stat-value {
+    font-size: 20px;
+  }
+
+  .triage-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-upload button {
+    width: 100%;
+  }
+
+  .triage-page .pagination {
+    justify-content: center;
+    flex-wrap: wrap;
   }
 }
