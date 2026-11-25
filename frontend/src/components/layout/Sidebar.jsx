@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import {
   LayoutDashboard,
   Ticket,
@@ -15,7 +16,7 @@ import {
 
 const workspaceLinks = [
   { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-  { label: "Triage Queue", path: "/tickets", icon: Ticket },
+  { label: "Triage Queue", path: "/triage", icon: Ticket },
   { label: "Resources & Booking", path: "/resources", icon: CalendarDays },
   { label: "My Bookings", path: "/my-bookings", icon: CalendarCheck },
 ];
@@ -27,6 +28,14 @@ const adminLinks = [
 ];
 
 function Sidebar({ collapsed, setCollapsed, isAdmin = false, onNavigate }) {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
+
   const renderLink = (item) => {
     const Icon = item.icon;
 
@@ -69,7 +78,7 @@ function Sidebar({ collapsed, setCollapsed, isAdmin = false, onNavigate }) {
       </nav>
 
       <div className="sidebar-bottom">
-        <button className="sidebar-link" type="button">
+        <button className="sidebar-link" type="button" onClick={handleLogout}>
           <LogOut size={19} strokeWidth={1.8} />
           {!collapsed && <span>Logout</span>}
         </button>

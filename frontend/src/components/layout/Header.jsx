@@ -1,7 +1,8 @@
+import { useAuth } from "../../context/AuthContext";
+import { Bell, Search, Menu } from "lucide-react";
 
-import { Bell, Search, Menu } from 'lucide-react';
-
-function Header({ onMenuClick, title = 'Dashboard' }) {
+function Header({ onMenuClick, title = "Dashboard" }) {
+  const { user } = useAuth();
   return (
     <header className="app-header">
       <div className="header-left">
@@ -20,11 +21,7 @@ function Header({ onMenuClick, title = 'Dashboard' }) {
       <div className="header-actions">
         <div className="header-search">
           <Search size={17} />
-          <input
-            type="search"
-            placeholder="Search..."
-            aria-label="Search"
-          />
+          <input type="search" placeholder="Search..." aria-label="Search" />
         </div>
 
         <button
@@ -36,10 +33,15 @@ function Header({ onMenuClick, title = 'Dashboard' }) {
         </button>
 
         <div className="header-profile">
-          <div className="profile-avatar">A</div>
+          <div className="profile-avatar">
+            {user?.name?.charAt(0).toUpperCase()}
+          </div>
+
           <div className="profile-info">
-            <span className="profile-name">Agent Demo</span>
-            <span className="profile-role">Agent</span>
+            <span className="profile-name">{user?.name}</span>
+            <span className="profile-role">
+              {user?.role === "ADMIN" ? "Admin" : "Agent"}
+            </span>
           </div>
         </div>
       </div>

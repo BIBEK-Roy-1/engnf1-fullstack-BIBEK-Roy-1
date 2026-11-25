@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import { useAuth } from '../../context/AuthContext';
 
 const pageTitles = {
   '/dashboard': 'Dashboard',
@@ -17,12 +18,13 @@ const pageTitles = {
 function AppLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   const location = useLocation();
   const title = pageTitles[location.pathname] || 'TriageSync';
 
-  // Temporary until authentication is connected.
-  const isAdmin = false;
+ 
+  const isAdmin = user?.role === 'ADMIN';
 
   return (
     <div className="app-layout">
