@@ -4,8 +4,10 @@ import User from "../models/user.model.js";
 import Ticket from "../models/ticket.model.js";
 import Booking from "../models/booking.model.js";
 import AppError from "../utils/app-error.js";
-import { validateBookingTimeRange ,isValidUTCTimestamp} from "../utils/booking-validation.js";
-
+import {
+  validateBookingTimeRange,
+  isValidUTCTimestamp,
+} from "../utils/booking-validation.js";
 
 // Check whether an active booking overlaps the requested slot.
 export const hasBookingOverlap = async (
@@ -78,13 +80,13 @@ export const createBooking = async ({
     await session.withTransaction(async () => {
       // Lock the active resource.
       const resource = await Resource.findOneAndUpdate(
-        { _id: resourceId, isActive: true },
+        { _id: resourceId },
         { $inc: { bookingLockVersion: 1 } },
         { returnDocument: "after", session },
       );
 
       if (!resource) {
-        throw new AppError("Resource not found or inactive.", 404, "NOT_FOUND");
+        throw new AppError("Resource not found.", 404, "NOT_FOUND");
       }
 
       // Lock the user to protect the booking limit.
@@ -108,7 +110,10 @@ export const createBooking = async ({
           throw new AppError("Ticket not found.", 404, "NOT_FOUND");
         }
       }
-
+      // Prevent bookings for inactive resources.
+      if (!resource.isActive) {
+        throw new AppError("Resource is inactive.", 409, "CONFLICT");
+      }
       // Check overlapping bookings.
       const overlap = await hasBookingOverlap(
         resourceId,
@@ -344,9 +349,7 @@ export const cancelBooking = async (bookingId, userId) => {
   return updatedBooking;
 };
 
-
 export const getBookingById = async (bookingId, userId, role) => {
-
   if (!mongoose.isValidObjectId(bookingId)) {
     throw new AppError("Booking not found.", 404, "NOT_FOUND");
   }
@@ -418,7 +421,6 @@ export const getMyBookings = async (
   };
 };
 
-
 //  Get all bookings with filters and pagination(admin)
 export const getAllBookings = async ({
   status,
@@ -447,28 +449,15 @@ export const getAllBookings = async ({
   }
 
   // Validate status.
-  const allowedStatuses = [
-    "PENDING",
-    "APPROVED",
-    "REJECTED",
-    "CANCELLED",
-  ];
+  const allowedStatuses = ["PENDING", "APPROVED", "REJECTED", "CANCELLED"];
 
   if (status && !allowedStatuses.includes(status)) {
-    throw new AppError(
-      "Invalid booking status.",
-      400,
-      "VALIDATION_ERROR",
-    );
+    throw new AppError("Invalid booking status.", 400, "VALIDATION_ERROR");
   }
 
   // Validate resource ID.
   if (resourceId && !mongoose.isValidObjectId(resourceId)) {
-    throw new AppError(
-      "Invalid resource ID.",
-      400,
-      "VALIDATION_ERROR",
-    );
+    throw new AppError("Invalid resource ID.", 400, "VALIDATION_ERROR");
   }
 
   // Validate date filters.
@@ -502,19 +491,13 @@ export const getAllBookings = async ({
     filter.resourceId = resourceId;
   }
 
- 
-  if (from || to) {
-    filter.startTime = {};
-    filter.endTime = {};
+if (to) {
+  filter.startTime = { $lt: new Date(to) };
+}
 
-    if (to) {
-      filter.startTime.$lt = new Date(to);
-    }
-
-    if (from) {
-      filter.endTime.$gt = new Date(from);
-    }
-  }
+if (from) {
+  filter.endTime = { $gt: new Date(from) };
+}
 
   // Fetch bookings and total count.
   const [data, total] = await Promise.all([
@@ -534,4 +517,3 @@ export const getAllBookings = async ({
     totalPages: Math.ceil(total / limit),
   };
 };
-
