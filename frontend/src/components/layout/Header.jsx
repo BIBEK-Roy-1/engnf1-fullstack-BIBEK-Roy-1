@@ -1,8 +1,9 @@
 import { useAuth } from "../../context/AuthContext";
-import { Bell, Search, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 
 function Header({ onMenuClick, title = "Dashboard" }) {
   const { user } = useAuth();
+
   return (
     <header className="app-header">
       <div className="header-left">
@@ -19,19 +20,6 @@ function Header({ onMenuClick, title = "Dashboard" }) {
       </div>
 
       <div className="header-actions">
-        <div className="header-search">
-          <Search size={17} />
-          <input type="search" placeholder="Search..." aria-label="Search" />
-        </div>
-
-        <button
-          className="header-icon-button"
-          type="button"
-          aria-label="Notifications"
-        >
-          <Bell size={19} />
-        </button>
-
         <div className="header-profile">
           <div className="profile-avatar">
             {user?.name?.charAt(0).toUpperCase()}

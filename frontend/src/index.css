@@ -1,10 +1,9 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
-  font-family: 'Inter', sans-serif;
-  color: #0F172A;
-  background: #F8FAFC;
+  font-family: "Inter", sans-serif;
+  color: #0f172a;
+  background: #f8fafc;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -12,27 +11,27 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Brand */
-  --primary: #2563EB;
-  --primary-hover: #1D4ED8;
-  --primary-light: #EFF6FF;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
 
   /* Backgrounds */
-  --bg-main: #F8FAFC;
-  --bg-surface: #FFFFFF;
-  --bg-muted: #F1F5F9;
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-muted: #f1f5f9;
 
   /* Text */
-  --text-primary: #0F172A;
-  --text-secondary: #64748B;
-  --text-muted: #94A3B8;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
 
   /* Borders */
-  --border: #E2E8F0;
+  --border: #e2e8f0;
 
   /* Status */
-  --success: #16A34A;
-  --warning: #D97706;
-  --danger: #DC2626;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
 
   /* Layout */
   --sidebar-width: 250px;
@@ -77,6 +76,6 @@ a {
 }
 
 ::selection {
-  background: #DBEAFE;
-  color: #1E40AF;
+  background: #dbeafe;
+  color: #1e40af;
 }

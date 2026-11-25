@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
   const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +20,6 @@ function Login() {
     try {
       await login({ email, password });
       navigate("/dashboard", { replace: true });
-
     } catch (error) {
       setError(error.message);
     } finally {
@@ -30,17 +30,17 @@ function Login() {
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h1>Welcome back</h1>
-        <p>Sign in to your TriageSync account.</p>
+        <h1>TriageSync</h1>
+        <p>Sign in to your account</p>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Email address</label>
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
-              name="email"
               placeholder="Enter your email"
+              autoComplete="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -52,18 +52,24 @@ function Login() {
             <input
               type="password"
               id="password"
-              name="password"
               placeholder="Enter your password"
+              autoComplete="current-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+
           {error && <p className="error-message">{error}</p>}
+
           <button type="submit" disabled={submitting}>
             {submitting ? "Signing in..." : "Sign in"}
           </button>
         </form>
+
+        <p className="auth-footer">
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
       </div>
     </div>
   );

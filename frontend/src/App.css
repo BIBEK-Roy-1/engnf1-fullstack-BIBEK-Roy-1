@@ -203,43 +203,6 @@
   gap: 18px;
 }
 
-.header-search {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  width: 210px;
-  padding: 9px 12px;
-  color: var(--text-muted);
-  background: var(--bg-main);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-}
-
-.header-search input {
-  width: 100%;
-  min-width: 0;
-  color: var(--text-primary);
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 12px;
-}
-
-.header-icon-button {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  color: var(--text-secondary);
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-}
-
-.header-icon-button:hover {
-  background: var(--bg-muted);
-}
-
 .header-profile {
   display: flex;
   align-items: center;
@@ -1463,4 +1426,87 @@
     justify-content: center;
     flex-wrap: wrap;
   }
+}
+
+/* Login and Register pages */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: var(--bg-main);
+}
+
+.auth-page .auth-container {
+  width: 100%;
+  max-width: 360px;
+  padding: 24px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.auth-container h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+  text-align: center;
+}
+
+.auth-container > p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.auth-container .form-group {
+  margin-bottom: 16px;
+}
+
+.auth-container label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.auth-container button[type="submit"] {
+  width: 100%;
+  padding: 11px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.auth-container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-container .auth-footer {
+  margin: 20px 0 0;
+  font-size: 13px;
+}
+
+.auth-container a {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.auth-container .error-message {
+  color: var(--danger);
+  font-size: 13px;
 }
