@@ -11,6 +11,20 @@ export const errorHandler = (err, req, res, next) => {
     message = "Requested record not found.";
   }
 
+  //validation errors
+  if (err.name === "ValidationError") {
+    statusCode = 400;
+    code = "VALIDATION_ERROR";
+    message = err.message;
+  }
+
+  // Duplicate MongoDB records
+  if (err.code === 11000) {
+    statusCode = 409;
+    code = "CONFLICT";
+    message = "A record with this value already exists.";
+  }
+
   if (statusCode >= 500) {
     statusCode = 500;
     code = "INTERNAL_SERVER_ERROR";
