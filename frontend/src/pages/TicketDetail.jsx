@@ -1,10 +1,6 @@
-
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import {
-  getTicketDetail,
-  updateTicket,
-} from '../api/tickets.api';
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getTicketDetail, updateTicket } from "../api/tickets.api";
 
 function TicketDetail() {
   const { id } = useParams();
@@ -16,14 +12,14 @@ function TicketDetail() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchDetail = async () => {
       try {
         setLoading(true);
-        setError('');
+        setError("");
 
         const result = await getTicketDetail(id);
 
@@ -70,33 +66,33 @@ function TicketDetail() {
     }
 
     if (Object.keys(updates).length === 0) {
-      setMessage('No changes to save.');
+      setMessage("No changes to save.");
       return;
     }
 
     // Keep previous values for rollback
     const previousTicket = ticket;
     const previousEvents = events;
-    const previousDraft = { ...draft };
+    const previousDraft = {
+      category: ticket.category,
+      priority: ticket.priority,
+      status: ticket.status,
+    };
 
     try {
       setSaving(true);
-      setError('');
-      setMessage('');
+      setError("");
+      setMessage("");
 
       // Optimistic update
       setTicket((prev) => ({
         ...prev,
         ...updates,
-        ...(updates.category
-          ? { isHumanOverride: true }
+        ...(updates.category ? { isHumanOverride: true } : {}),
+        ...(updates.category ||
+        (updates.status && previousTicket.status === "OPEN")
+          ? { isReviewed: true }
           : {}),
-        ...(
-          updates.category ||
-          (updates.status && previousTicket.status === 'OPEN')
-            ? { isReviewed: true }
-            : {}
-        ),
       }));
 
       const result = await updateTicket(id, updates);
@@ -111,14 +107,14 @@ function TicketDetail() {
         status: result.ticket.status,
       });
 
-      setMessage('Ticket updated successfully.');
+      setMessage("Ticket updated successfully.");
     } catch (err) {
       // Rollback if API request fails
       setTicket(previousTicket);
       setEvents(previousEvents);
       setDraft(previousDraft);
 
-      setError(err.message || 'Failed to update ticket.');
+      setError(err.message || "Failed to update ticket.");
     } finally {
       setSaving(false);
     }
@@ -138,11 +134,7 @@ function TicketDetail() {
 
   return (
     <div className="ticket-detail-page">
-
-      <button
-        className="back-button"
-        onClick={() => navigate('/triage')}
-      >
+      <button className="back-button" onClick={() => navigate("/triage")}>
         ← Back to Triage Queue
       </button>
 
@@ -153,16 +145,11 @@ function TicketDetail() {
         </div>
       </div>
 
-      {message && (
-        <p className="success-message">{message}</p>
-      )}
+      {message && <p className="success-message">{message}</p>}
 
-      {error && (
-        <p className="error-message">{error}</p>
-      )}
+      {error && <p className="error-message">{error}</p>}
 
       <section className="ticket-detail-card">
-
         <div className="ticket-subject">
           <h2>{ticket.subject}</h2>
           <span>{ticket.externalId}</span>
@@ -181,12 +168,12 @@ function TicketDetail() {
 
           <p>
             <strong>Human Override:</strong>
-            {ticket.isHumanOverride ? 'Yes' : 'No'}
+            {ticket.isHumanOverride ? "Yes" : "No"}
           </p>
 
           <p>
             <strong>Reviewed:</strong>
-            {ticket.isReviewed ? 'Yes' : 'No'}
+            {ticket.isReviewed ? "Yes" : "No"}
           </p>
 
           <p>
@@ -199,7 +186,6 @@ function TicketDetail() {
             {new Date(ticket.updatedAt).toLocaleString()}
           </p>
         </div>
-
       </section>
 
       <section className="agent-review-card">
@@ -207,7 +193,6 @@ function TicketDetail() {
         <p>Review and update the ticket classification and status.</p>
 
         <div className="review-fields">
-
           <div className="review-field">
             <label htmlFor="category">Category</label>
 
@@ -256,7 +241,6 @@ function TicketDetail() {
               <option value="CLOSED">Closed</option>
             </select>
           </div>
-
         </div>
 
         <button
@@ -264,7 +248,7 @@ function TicketDetail() {
           onClick={handleSave}
           disabled={saving}
         >
-          {saving ? 'Saving...' : 'Save Review'}
+          {saving ? "Saving..." : "Save Review"}
         </button>
       </section>
 
@@ -275,37 +259,27 @@ function TicketDetail() {
           <p>No audit history available.</p>
         ) : (
           <div className="ticket-audit-list">
-
             {events.map((event) => (
-              <div
-                key={event.id}
-                className="ticket-audit-item"
-              >
+              <div key={event.id} className="ticket-audit-item">
                 <div>
-                  <strong>
-                    {event.field.toUpperCase()} UPDATED
-                  </strong>
+                  <strong>{event.field.toUpperCase()} UPDATED</strong>
 
                   <p>
-                    {String(event.oldValue ?? 'None')}
-                    {' → '}
-                    {String(event.newValue ?? 'None')}
+                    {String(event.oldValue ?? "None")}
+                    {" → "}
+                    {String(event.newValue ?? "None")}
                   </p>
                 </div>
 
                 <div className="audit-meta">
                   <span>By: {event.actor}</span>
-                  <span>
-                    {new Date(event.createdAt).toLocaleString()}
-                  </span>
+                  <span>{new Date(event.createdAt).toLocaleString()}</span>
                 </div>
               </div>
             ))}
-
           </div>
         )}
       </section>
-
     </div>
   );
 }
