@@ -1178,3 +1178,38 @@
   font: inherit;
   box-sizing: border-box;
 }
+
+/* Admin Manage Resources */
+
+.manage-resources-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.manage-resources-page h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.manage-resources-page > p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.admin-resource-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-resource-actions button {
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .admin-resource-actions button {
+    width: 100%;
+  }
+}

@@ -1,13 +1,10 @@
-import { apiRequest } from './client';
+import { apiRequest } from "./client";
 
 export function getResources(params = {}) {
   const filteredParams = Object.fromEntries(
     Object.entries(params).filter(
-      ([, value]) =>
-        value !== '' &&
-        value !== undefined &&
-        value !== null
-    )
+      ([, value]) => value !== "" && value !== undefined && value !== null,
+    ),
   );
 
   const query = new URLSearchParams(filteredParams).toString();
@@ -23,4 +20,18 @@ export function getResourceAvailability(id, from, to) {
   const query = new URLSearchParams({ from, to });
 
   return apiRequest(`/resources/${id}/availability?${query}`);
+}
+
+export function createResource(data) {
+  return apiRequest("/resources", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export function updateResource(id, data) {
+  return apiRequest(`/resources/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
 }

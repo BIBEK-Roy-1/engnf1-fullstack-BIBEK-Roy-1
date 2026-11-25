@@ -9,6 +9,7 @@ import TicketDetail from "../pages/TicketDetail";
 import Resources from "../pages/Resources";
 import ResourceDetail from "../pages/ResourceDetail";
 import MyBookings from "../pages/MyBookings";
+import ManageResources from "../pages/ManageResources";
 
 function AppRoutes() {
   return (
@@ -27,6 +28,11 @@ function AppRoutes() {
           <Route path="/resources/:id" element={<ResourceDetail />} />
 
           <Route path="/my-bookings" element={<MyBookings />} />
+
+          {/* Admin-only routes */}
+          <Route element={<ProtectedRoute adminOnly />}>
+            <Route path="/admin/resources" element={<ManageResources />} />
+          </Route>
         </Route>
       </Route>
 
